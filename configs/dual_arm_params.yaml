@@ -1,0 +1,79 @@
+Description:
+  - "This experiment trains jointly an SDF model and a SE(3) Grasp Energy"
+
+exp_log_dir: "./experiments_jul/temp/"
+# exp_log_dir: "./experiments_jul/collision_predictor_3aug_collision"
+# exp_log_dir: "./experiments_jul/ablations/fc_trained_w_vision_frozen_2"
+# exp_log_dir: "./experiments_jul/collision_pred_w_gripper_pcd_21jul_collision_vision_finetuned/"
+# exp_log_dir: './experiments_may/dual_grasp_diffusion_conv_classifier_joint_da2/'
+single_object: false
+# classifier_path: '/home/dualarm/dummyhome/md/March2025/dual-arm-grasp-diffusion/pretrained_checkpoints/gpd_classifier_checkpoint.pt'
+classifier_path: null
+use_attention: False
+use_wandb: False
+num_input_points: 1000
+num_input_grasps: 64
+learning_rate: 0.0001
+unet: unet
+single_arm: False
+
+TrainSpecs:
+  batch_size: 8
+  num_epochs: 1000
+  steps_til_summary: 20
+  iters_til_checkpoint: 10000
+  epochs_til_checkpoint: 20
+
+NetworkArch: "DualGraspDiffusionConv"  # "DualGraspDiffusionConv" # PointcloudGraspDiffusionConv, DualGraspDiffusionConv
+
+NetworkSpecs:
+  feature_encoder:
+    enc_dim: 132
+    in_dim: 3
+    out_dim: 7
+    dims: [512, 512, 512, 512, 512, 512, 512, 512]
+    dropout: [0, 1, 2, 3, 4, 5, 6, 7]
+    dropout_prob: 0.2
+    norm_layers: [0, 1, 2, 3, 4, 5, 6, 7]
+    latent_in: [4]
+    xyz_in_all: false
+    use_tanh: false
+    latent_dropout: false
+    weight_norm: true
+
+  encoder:
+    latent_size: 132
+    hidden_dim: 512
+
+  points:
+    n_points: 30
+    loc: [0.0, 0.0, 0.5]
+    scale: [0.7, 0.5, 0.7]
+
+  decoder:
+    hidden_dim: 512
+
+LearningRateSchedule:
+  - Type: "Step"
+    Initial: 0.0005
+    Interval: 500
+    Factor: 0.5
+  - Type: "Step"
+    Initial: 0.0005
+    Interval: 500
+    Factor: 0.5
+  - Type: "Step"
+    Initial: 0.0005
+    Interval: 500
+    Factor: 0.5
+  - Type: "Step"
+    Initial: 0.0005
+    Interval: 500
+    Factor: 0.5
+
+Losses:
+  - "sdf_loss"
+  - "dual_projected_denoising_loss"
+  - "classifier_loss"
+  # - "vae_loss"
+  # - "collision_classifier_loss"
