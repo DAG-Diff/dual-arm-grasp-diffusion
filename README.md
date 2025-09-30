@@ -2,7 +2,7 @@
 
 This is the official repository for DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps. The codebase and the documentation is still in progress. <br>
 
-Check the Project <a href="https://dag-diff.github.io/dagdiff/">[Website]</a> for more results and updates. 
+Check the <a href="https://dag-diff.github.io/dagdiff/">[Project Website]</a> for more results and updates. 
 
 ## Installation
 
