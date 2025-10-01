@@ -162,15 +162,11 @@ cython_debug/
 close_region.ply
 output_mesh.obj
 conv_grasp_diffusion
-*.pt
-*.pth
-*.ipynb
 demo
 .vscode
 experiments*
 wandb
-temp
 grasp_generation
 aug5_pcds
 ./real_life_meshes
-checkpoint
+*pth

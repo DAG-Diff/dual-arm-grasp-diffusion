@@ -47,6 +47,8 @@ CUDA_VISIBLE_DEVICES=0 python3 scripts/sample/generate_dual_6d_grasp_poses.py \
 --input ./try_meshes/monitor.obj
 ```
 
+Use <a href="">viz_grasp.ipynb</a> to visualize the generated grasps and the denoising trajectory.
+
 ## Training 
 
 Coming soon
