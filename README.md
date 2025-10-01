@@ -1,8 +1,18 @@
-# DAGDiff: <u>D</u>ual-<u>A</u>rm <u>G</u>rasp <u>Diff</u>usion
+<!-- # DAGDiff: <ins>D</ins>ual-<ins>A</ins>rm <ins>G</ins>rasp <ins>Diff</ins>usion -->
+# <center>DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps</center>
 
 This is the official repository for DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps. The codebase and the documentation is still in progress. <br>
 
-Check the <a href="https://dag-diff.github.io/dagdiff/">[Project Website]</a> for more results and updates. 
+Check the <a href="https://dag-diff.github.io/dagdiff/">[Project Website]</a> for more results and updates.
+
+## TODO
+- [ ] : Add visualization notebook
+- [ ] : Update documentation
+- [ ] : Refactor training and eval code
+- [x] : Push inference code and model checkpoint
+- [x] : Conda env working fine 
+- [x] : Initial release
+
 
 ## Installation
 
@@ -47,7 +57,7 @@ CUDA_VISIBLE_DEVICES=0 python3 scripts/sample/generate_dual_6d_grasp_poses.py \
 --input ./try_meshes/monitor.obj
 ```
 
-Use <a href="">viz_grasp.ipynb</a> to visualize the generated grasps and the denoising trajectory.
+Use <a href="https://github.com/DAG-Diff/dual-arm-grasp-diffusion/blob/main/notebooks/viz_grasps.ipynb">viz_grasp.ipynb</a> to visualize the generated grasps and the denoising trajectory.
 
 ## Training 
 
@@ -58,12 +68,3 @@ Our codebase is built upon the existing works of <a href="https://sites.google.c
 
 ## Cite
 
-
-## TODO
-
-- [ ] : Add visualization notebook
-- [ ] : Update documentation
-- [ ] : Refactor training and eval code
-- [x] : Push inference code and model checkpoint
-- [x] : Conda env working fine 
-- [x] : Initial release
