@@ -12,12 +12,13 @@ import random
 
 def load_model(args):
     if 'pretrained_model' in args:
-        model_args = load_experiment_specifications('/home/dualarm/dummyhome/md/March2025/dual-arm-grasp-diffusion/configs/',
+        model_args = load_experiment_specifications('./configs/',
                                                     load_yaml=args['pretrained_model'])
         args['classifier_path'] = model_args['classifier_path']      
         args["NetworkArch"] = model_args["NetworkArch"]
         args["NetworkSpecs"] = model_args["NetworkSpecs"]
         args['use_attention'] = model_args['use_attention']
+        args['inference_checkpoint'] = model_args['inference_checkpoint']
 
     if args['NetworkArch'] == 'GraspDiffusion':
         print('Loading GraspDiffusion')
@@ -37,7 +38,7 @@ def load_model(args):
         print('Loaded DualGraspVAE')
         
     if 'pretrained_model' in args:
-        model_path = './experiments_jul/collision_predictor_30jul_UniformPts/checkpoints/model_epoch_0359_iter_211091.pth'
+        model_path = args['inference_checkpoint']
         print('Loading Pretrained model from', model_path)
 
         ret = model.load_state_dict(torch.load(model_path), strict=False)

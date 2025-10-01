@@ -32,9 +32,24 @@ pip install -e . # installing se3dif module
 
 ## Download Dataset
 
+Coming soon
+
 ## Inference
 
+For inference, first download the model checkpoint from <a href="https://iiithydresearch-my.sharepoint.com/:u:/g/personal/md_faizal_research_iiit_ac_in/EegOVM7li5xAsG7fFH9B4OIB07OSM7INiTIQDmiWpeRoFw?e=qU2po1">link</a> and place it in `./checkpoint` directory. The same path needs to be provided in `./configs/dual_arm_params.yaml` as <b>inference_checkpoint</b>. Two example object meshes are stored in `./try_meshes` directory which can be used to run the model. 
+
+Once done, run the following command to generate dual-arm grasps. 
+
+```sh
+CUDA_VISIBLE_DEVICES=0 python3 scripts/sample/generate_dual_6d_grasp_poses.py \
+--n_grasps 300 \
+--model dual_arm_params \
+--input ./try_meshes/monitor.obj
+```
+
 ## Training 
+
+Coming soon
 
 ## Acknowledgment
 Our codebase is built upon the existing works of <a href="https://sites.google.com/view/se3dif">SE(3)-diff</a> and <a href="https://constrained-grasp-diffusion.github.io/">CGDF</a>. We thank the authors for releasing the code.
@@ -47,5 +62,6 @@ Our codebase is built upon the existing works of <a href="https://sites.google.c
 - [ ] : Add visualization notebook
 - [ ] : Update documentation
 - [ ] : Refactor training and eval code
+- [x] : Push inference code and model checkpoint
 - [x] : Conda env working fine 
 - [x] : Initial release

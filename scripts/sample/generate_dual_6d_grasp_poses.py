@@ -74,21 +74,12 @@ def sample_pointcloud(input_path=None, return_transform=False):
     scaling = 1
 
     # sample point cloud
-    P = mesh.sample(1000)
-    # #!---------------------------------------------------------------------
-    # P = np.load('./aug5_pcds/saucepan_now.npy').astype(np.float32)
-    # P = np.load('./drone_pcd.npy').astype(np.float32)
-    # P = P - np.mean(P, axis=0)  # center the point cloud
-    # scale the point cloud
-    # s = np.max(np.linalg.norm(P, axis=1))
-    # scaling = 1 / (2 * s)
-    # #!---------------------------------------------------------------------
-    
+    P = mesh.sample(1000)    
     P = P * scaling
     
     # apply random rotation
     # sampled_rot = scipy.spatial.transform.Rotation.random()
-    sampled_rot = scipy.spatial.transform.Rotation.from_euler('z', np.random.uniform(0, 2.5 * np.pi), degrees=False)
+    sampled_rot = scipy.spatial.transform.Rotation.from_euler('z', np.random.uniform(0, 2 * np.pi), degrees=False)
     rot = sampled_rot.as_matrix()
     # rot = np.eye(3)
 
@@ -115,7 +106,7 @@ def sample_pointcloud(input_path=None, return_transform=False):
 
 
 def main(get_args=True, input_dict=None):
-    seed=56
+    seed=128
     seed_all(seed)
 
     if get_args:
@@ -202,24 +193,6 @@ def main(get_args=True, input_dict=None):
     torch.save(energies, './temp/energies.pt')
     torch.save(force_closures, './temp/force_closures.pt')
     torch.save(collisions, './temp/collisions.pt')
-    
-    # data = {
-    #     'pred_grasps': H_dual.detach().cpu().numpy(),
-    #     'energy': e.detach().cpu().numpy(),
-    #     'classifier': model.pred_label.detach().cpu().numpy().flatten(),
-    #     'collision': model.collision_pred.detach().cpu().numpy(),
-    #     'traj': traj.detach().cpu().numpy(),
-    #     'rot': rot
-    # }
-    
-    # SAVE_PATH = args.save_path
-    
-    # os.makedirs(SAVE_PATH + '/output', exist_ok=True)
-    # os.makedirs(SAVE_PATH + '/meshes', exist_ok=True)
-    
-    # mesh_name = os.path.basename(input_path).replace('.obj', '')
-    # torch.save(data, f'{SAVE_PATH}/output/{mesh_name}.pt')
-    # mesh.export(f'{SAVE_PATH}/meshes/{mesh_name}.obj')
     
 if __name__ == "__main__":
     main(get_args=True, input_dict=None)

@@ -17,6 +17,8 @@ learning_rate: 0.0001
 unet: unet
 single_arm: False
 
+inference_checkpoint: ./checkpoint/model_epoch_0359_iter_211091.pth
+
 TrainSpecs:
   batch_size: 8
   num_epochs: 1000
