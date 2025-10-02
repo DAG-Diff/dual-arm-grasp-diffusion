@@ -12,15 +12,15 @@ class SDFLoss():
         loss_dict = dict()
         label = ground_truth[self.field].squeeze().reshape(-1)
 
-        ## Set input ##
+        ## Set input 
         x_sdf = model_input['x_sdf'].detach().requires_grad_()
         c = model_input['visual_context']
 
-        ## Compute model output ##
+        ## Compute model output 
         model.set_latent(c, batch=x_sdf.shape[1])
         sdf = model.compute_sdf(x_sdf)
 
-        ## Reconstruction Loss ##
+        ## Reconstruction Loss 
         loss = nn.L1Loss(reduction='mean')
         pred_clip_sdf = torch.clip(sdf, -10., self.delta)
         target_clip_sdf = torch.clip(label, -10., self.delta)

@@ -33,6 +33,7 @@ def parse_args():
     p.add_argument('--model', type=str, default='cgdf_v1')
     p.add_argument('--input', type=str, required=True)
     p.add_argument('--debug_mode', action='store_true', default=False)
+    p.add_argument('--seed', type=int, default=128)
 
     opt = p.parse_args()
     return opt
@@ -78,10 +79,8 @@ def sample_pointcloud(input_path=None, return_transform=False):
     P = P * scaling
     
     # apply random rotation
-    # sampled_rot = scipy.spatial.transform.Rotation.random()
     sampled_rot = scipy.spatial.transform.Rotation.from_euler('z', np.random.uniform(0, 2 * np.pi), degrees=False)
     rot = sampled_rot.as_matrix()
-    # rot = np.eye(3)
 
     P = np.einsum('mn,bn->bm', rot, P)
     P *= 8.
@@ -98,7 +97,6 @@ def sample_pointcloud(input_path=None, return_transform=False):
     
     print(f"Max point of P: {np.max(P, axis=0)} | mean: {P_mean}")
 
-
     if return_transform:
         return P, mesh, rot, scaling
     
@@ -106,8 +104,6 @@ def sample_pointcloud(input_path=None, return_transform=False):
 
 
 def main(get_args=True, input_dict=None):
-    seed=128
-    seed_all(seed)
 
     if get_args:
         args = parse_args()
@@ -120,6 +116,7 @@ def main(get_args=True, input_dict=None):
         args.add_argument('--input', type=str)
         args.add_argument('--model', type=dict)  # or customize based on model structure,
         args.add_argument('--debug_mode', action='store_true', default=False)
+        args.add_argument('--seed', type=int, default=128)
 
         # Parse into a namespace using known values
         args = args.parse_args(args=[], namespace=configargparse.Namespace(
@@ -127,18 +124,17 @@ def main(get_args=True, input_dict=None):
             device=input_dict['device'],
             input=input_dict['input'],
             model=input_dict['model'],
-            save_path=input_dict['save_path']
+            save_path=input_dict['save_path'],
+            seed=input_dict.get('seed', 128)
         ))
         
-    n_grasps = int(args.n_grasps)
+    seed = args.seed
+    seed_all(seed)
+    
     device = args.device
     input_path = args.input
 
-    ## Set Model and Sample Generator ##
-    
-    # P, mesh, rot, scaling = sample_pointcloud(input_path, return_transform=True)
-    # generator, model = get_approximated_grasp_diffusion_field(P, args, device, seed)
-    # ...existing code...
+    ## Set Model and Sample Generator 
     P, mesh, rot, scaling = sample_pointcloud(input_path, return_transform=True)
     generator, model = get_approximated_grasp_diffusion_field(P, args, device, seed)
     
@@ -156,24 +152,15 @@ def main(get_args=True, input_dict=None):
     else:
         H_, t = generator.sample(dual=dual, save_path=save_path)
 
-    ic(traj.shape)
     
     H = H_.reshape(-1,4,4)
-    if not dual:
-        H1, H2 = H[:n_grasps, ...], H[n_grasps:, ...]
-        e = model(H1=H1, H2=H2, k1=t, k2=t, batch=1).squeeze()
-    else:
-        # energy = model(perturbed_H, random_t.unsqueeze(0).repeat(1,2).reshape(-1), batch=batch, dual=True)
-        e = model(H, t, batch=1, dual=dual).flatten()
+    e = model(H, t, batch=1, dual=dual).flatten()
     
-    mask = e < 0 # emperically set threshold, changes with different ckpt.
-    # H = H[mask]
     H_dual = H.clone().reshape(-1, 2, 4, 4)
     print(H_dual.shape)
 
     print(f"Generated {H_dual.shape[0]} valid grasps")
 
-    # H[..., :3, -1] *=1/8.
     H_dual[..., :3, -1] *=1/8. * 1/scaling
     
     traj[..., :3, -1] *=1/8. * 1/scaling
@@ -189,7 +176,6 @@ def main(get_args=True, input_dict=None):
     torch.save(P, './temp/point_cloud.pt')
     torch.save(model.collision_pred.detach().cpu().numpy(), './temp/collision_scores.pt')
     torch.save(rot, './temp/rotation.pt')
-    
     torch.save(energies, './temp/energies.pt')
     torch.save(force_closures, './temp/force_closures.pt')
     torch.save(collisions, './temp/collisions.pt')
