@@ -63,11 +63,6 @@ Use <a href="https://github.com/DAG-Diff/dual-arm-grasp-diffusion/blob/main/note
 
 Coming soon
 
-## 5. Research Progression  
-
-Our work builds upon a series of previous research projects.  
-If you're interested in understanding how our research evolved, check out our previous works:
-
 <!-- ## 6. Research Progression  
 
 Our research is part of a continuing line of projects.
@@ -76,7 +71,7 @@ To see how it has developed over time, take a look at our earlier works:
 
 
 ```
-[CGDF] ────┐--------┐
+[CGDF] ────┐------┐
          |        |  
          |        v
          ├─────> DG16M ────> DAGDiff
