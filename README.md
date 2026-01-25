@@ -6,9 +6,9 @@ This is the official repository for DAGDiff: Guiding Dual-Arm Grasp Diffusion to
 Check the <a href="https://dag-diff.github.io/dagdiff/">[Project Website]</a> for more results and updates.
 
 ## TODO
-- [ ] : Add visualization notebook
-- [ ] : Update documentation
-- [ ] : Refactor training and eval code
+- [x] : Add visualization notebook
+- [ ] : Update code documentation
+- [x] : Refactor training and eval code
 - [x] : Push inference code and model checkpoint
 - [x] : Conda env working fine 
 - [x] : Initial release
@@ -38,11 +38,39 @@ Install remaining packages
 ```sh
 pip install -r requirements.txt
 pip install -e . # installing se3dif module
+pip install huggingface_hub
 ```
 
 ## 2. Download Dataset
 
-Coming soon
+```sh
+huggingface-cli download faizalkarim/dagdiff-dataset --repo-type dataset
+```
+
+Unzip the folders (grasps.zip, meshes.zip, sdf.zip) and the final folder should look like:
+
+```
+dagdiff-dataset
+├── train_final.txt
+├── test_final.txt
+|
+├── grasps/
+│   ├── 554fa306799d623af7248d9dbed7a7b8.h5
+│   ├── c2ad96f56ec726d270a43c2d978e502e.h5
+│   ├── ....
+|
+├── meshes/
+│   ├── 554fa306799d623af7248d9dbed7a7b8.obj
+│   ├── c2ad96f56ec726d270a43c2d978e502e.obj
+│   ├── ....
+|
+└── sdf/
+    ├── 554fa306799d623af7248d9dbed7a7b8.h5
+    ├── c2ad96f56ec726d270a43c2d978e502e.h5
+    └── ....
+```
+
+Use <a href="https://github.com/DAG-Diff/dual-arm-grasp-diffusion/blob/main/notebooks/viz_dataset.ipynb">viz_dataset.ipynb</a> to visualize the the dataset.
 
 ## 3. Inference
 
@@ -61,7 +89,28 @@ Use <a href="https://github.com/DAG-Diff/dual-arm-grasp-diffusion/blob/main/note
 
 ## 4. Training 
 
-Coming soon
+First, copy the path of the data dir in <a href="https://github.com/DAG-Diff/dual-arm-grasp-diffusion/blob/main/configs/dual_arm_params.yaml">dual_arm_params.yaml</a> as given below.
+
+```yaml
+grasps_dir: <PATH>/dagdiff-dataset/grasps/
+meshes_dir: <PATH>/dagdiff-dataset/meshes/
+sdf_dir: <PATH>/dagdiff-dataset/sdf/
+train_meshes_list: <PATH>/dagdiff-dataset/train_final.txt/
+val_meshes_list: <PATH>/dagdiff-dataset/test_final.txt/
+```
+
+Train the model using the command:
+
+```sh
+python3 trainer_script.py --config dual_arm_params.yaml
+```
+Start the training from a pretrained checkpoint by specifying the checkpoint path in <a href="https://github.com/DAG-Diff/dual-arm-grasp-diffusion/blob/main/configs/dual_arm_params.yaml">dual_arm_params.yaml</a>. It also contains other hyperparameters which can be modified as required. 
+
+```yaml
+pretrained_checkpoint:
+    path: <PATH to checkpoint>
+    to_load: ['all'] # or ['none', 'vision_encoder', 'feature_encoder', 'dual_energy_net', 'classifier', 'collision_predictor']
+```
 
 <!-- ## 6. Research Progression  
 
@@ -71,7 +120,7 @@ To see how it has developed over time, take a look at our earlier works:
 
 
 ```
-[CGDF] ────┐------┐
+CGDF ──────-------┐
          |        |  
          |        v
          ├─────> DG16M ────> DAGDiff

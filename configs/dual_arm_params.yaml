@@ -1,13 +1,16 @@
-Description:
-  - "This experiment trains jointly an SDF model and a SE(3) Grasp Energy"
+Description: "Configuration file for dual arm grasp diffusion model training and inference."
 
 exp_log_dir: "./experiments_jul/temp/"
-# exp_log_dir: "./experiments_jul/collision_predictor_3aug_collision"
-# exp_log_dir: "./experiments_jul/ablations/fc_trained_w_vision_frozen_2"
-# exp_log_dir: "./experiments_jul/collision_pred_w_gripper_pcd_21jul_collision_vision_finetuned/"
-# exp_log_dir: './experiments_may/dual_grasp_diffusion_conv_classifier_joint_da2/'
+
+seed: 56
+grasps_dir: '/scratch/dualarm/DG16M/dg16m/grasps'
+meshes_dir: '/scratch/dualarm/DA2_15mar/meshes'
+sdf_dir: '/scratch/dualarm/DA2_15mar/sdf'
+train_meshes_list: /scratch/dualarm/DG16M/train_final.txt
+val_meshes_list: /scratch/dualarm/DG16M/test_final.txt
+
 single_object: false
-# classifier_path: '/home/dualarm/dummyhome/md/March2025/dual-arm-grasp-diffusion/pretrained_checkpoints/gpd_classifier_checkpoint.pt'
+
 classifier_path: null
 use_attention: False
 use_wandb: False
@@ -23,10 +26,11 @@ TrainSpecs:
   batch_size: 8
   num_epochs: 1000
   steps_til_summary: 20
-  iters_til_checkpoint: 10000
   epochs_til_checkpoint: 20
+  val_batch_size: 5
+  num_workers: 12
 
-NetworkArch: "DualGraspDiffusionConv"  # "DualGraspDiffusionConv" # PointcloudGraspDiffusionConv, DualGraspDiffusionConv
+NetworkArch: "DualGraspDiffusionConv" 
 
 NetworkSpecs:
   feature_encoder:
@@ -35,7 +39,7 @@ NetworkSpecs:
     out_dim: 7
     dims: [512, 512, 512, 512, 512, 512, 512, 512]
     dropout: [0, 1, 2, 3, 4, 5, 6, 7]
-    dropout_prob: 0.2
+    dropout_prob: 0.1
     norm_layers: [0, 1, 2, 3, 4, 5, 6, 7]
     latent_in: [4]
     xyz_in_all: false
@@ -46,6 +50,10 @@ NetworkSpecs:
   encoder:
     latent_size: 132
     hidden_dim: 512
+    grid_resolution: 32
+    plane_resolution: 32
+    plane_type: ["xz", "xy", "yz"]
+    unet_depth: 5
 
   points:
     n_points: 30
@@ -55,27 +63,12 @@ NetworkSpecs:
   decoder:
     hidden_dim: 512
 
-LearningRateSchedule:
-  - Type: "Step"
-    Initial: 0.0005
-    Interval: 500
-    Factor: 0.5
-  - Type: "Step"
-    Initial: 0.0005
-    Interval: 500
-    Factor: 0.5
-  - Type: "Step"
-    Initial: 0.0005
-    Interval: 500
-    Factor: 0.5
-  - Type: "Step"
-    Initial: 0.0005
-    Interval: 500
-    Factor: 0.5
+  pretrained_checkpoint: 
+    path: ./checkpoint/model_epoch_0359_iter_211091.pth
+    to_load: ['all'] # or ['none', 'vision_encoder', 'feature_encoder', 'dual_energy_net', 'classifier', 'collision_predictor']
 
 Losses:
   - "sdf_loss"
   - "dual_projected_denoising_loss"
   - "classifier_loss"
-  # - "vae_loss"
   # - "collision_classifier_loss"

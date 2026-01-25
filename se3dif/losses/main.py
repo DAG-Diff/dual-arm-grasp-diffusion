@@ -1,4 +1,4 @@
-from .denoising_loss import ProjectedSE3DenoisingLoss, SE3DenoisingLoss, DualProjectedSE3DenoisingLoss, DualConditionedProjectedSE3DenoisingLoss
+from .denoising_loss import DualProjectedSE3DenoisingLoss
 from .collision_classifier_loss import CollisionClassifierLoss
 from .sdf_loss import SDFLoss
 from .classifier_loss import ClassifierLoss
@@ -10,18 +10,16 @@ def get_losses(args):
     loss_fns = {}
     if 'sdf_loss' in losses:
         loss_fns['sdf'] = SDFLoss().loss_fn
-    if 'projected_denoising_loss' in losses:
-        loss_fns['denoise'] = ProjectedSE3DenoisingLoss().loss_fn
-    if 'denoising_loss' in losses:
-        loss_fns['denoise'] = SE3DenoisingLoss().loss_fn
+
     if 'dual_projected_denoising_loss' in losses:
         loss_fns['denoise'] = DualProjectedSE3DenoisingLoss().loss_fn
-    if 'dual_conditioned_projected_denoising_loss' in losses:
-        loss_fns['denoise'] = DualConditionedProjectedSE3DenoisingLoss().loss_fn
+
     if 'classifier_loss' in losses:
         loss_fns['classifier'] = ClassifierLoss().loss_fn
+
     if 'vae_loss' in losses:
         loss_fns['vae'] = VAELoss().loss_fn
+
     if 'collision_classifier_loss' in losses:
         loss_fns['collision_classifier'] = CollisionClassifierLoss().loss_fn
         
