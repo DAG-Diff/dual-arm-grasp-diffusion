@@ -11,7 +11,15 @@ Check the <a href="https://dag-diff.github.io/dagdiff/">[Project Website]</a> fo
   <img src="./temp/saucepan.gif" width="260" style="border-radius:12px;" />
 </div>
 
+<div style="margin: 12px"></div>
 
+<center>
+    <div style="width: 420px; height: 10px; border-radius: 999px; background: linear-gradient(to right, #ff0000, #ffff00, #00ff00);"></div>
+    <div style="width: 420px; display: flex; justify-content: space-between; font-size: 13px; margin-top: 4px;">
+    <span>Unstable grasp pairs</span>
+    <span>Stable grasp pairs</span>
+    </div>
+</center>
 
 ## TODO
 - [x] : Add visualization notebook
