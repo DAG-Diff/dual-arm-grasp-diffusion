@@ -6,9 +6,9 @@ This is the official repository for DAGDiff: Guiding Dual-Arm Grasp Diffusion to
 Check the <a href="https://dag-diff.github.io/dagdiff/">[Project Website]</a> for more results and updates.
 
 <div style="display:flex; gap:12px; flex-wrap:wrap;">
-  <img src="./temp/tray.gif" width="300" style="border-radius:12px;" />
-  <img src="./temp/drone.gif" width="300" style="border-radius:12px;" />
-  <img src="./temp/saucepan.gif" width="300" style="border-radius:12px;" />
+  <img src="./temp/tray.gif" width="260" style="border-radius:12px;" />
+  <img src="./temp/drone.gif" width="260" style="border-radius:12px;" />
+  <img src="./temp/saucepan.gif" width="260" style="border-radius:12px;" />
 </div>
 
 
