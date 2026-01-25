@@ -58,7 +58,7 @@ pip install huggingface_hub
 ```
 
 ## 2. Download Dataset
-
+Run the following command to download the dataset from huggingface (or get it manually from <a href="https://huggingface.co/datasets/faizalkarim/dagdiff-dataset">faizalkarim/dagdiff-dataset</a>).
 ```sh
 huggingface-cli download faizalkarim/dagdiff-dataset --repo-type dataset
 ```
