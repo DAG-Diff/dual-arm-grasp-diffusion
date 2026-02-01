@@ -1,6 +1,8 @@
 <!-- # DAGDiff: <ins>D</ins>ual-<ins>A</ins>rm <ins>G</ins>rasp <ins>Diff</ins>usion -->
 # DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps
 
+<h3>Accepted at ICRA 2026</h3>
+
 This is the official repository for DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps. The codebase and the documentation is still in progress. <br>
 
 Check the <a href="https://dag-diff.github.io/dagdiff/">[Project Website]</a> for more results and updates.
@@ -128,27 +130,54 @@ pretrained_checkpoint:
     to_load: ['all'] # or ['none', 'vision_encoder', 'feature_encoder', 'dual_energy_net', 'classifier', 'collision_predictor']
 ```
 
-<!-- ## 6. Research Progression  
+## 5. Research Progression  
 
-Our research is part of a continuing line of projects.
-To see how it has developed over time, take a look at our earlier works:
-
-
+Our research is part of a continuing line of projects. To see how it has developed over time, take a look at our earlier works:
 
 ```
-CGDF ──────-------┐
-         |        |  
-         |        v
-         ├─────> DG16M ────> DAGDiff
-         |
-         |
-DAVIL ───┘
+[1] CGDF ───────────────┐
+           |            |  
+           |            v
+           ├─────> [3] DG16M ────> [4] DAGDiff
+           |
+           |
+[2] DAVIL ─┘
+```
+<details>
+<summary>References</summary>
 
-``` -->
+- **[1] CGDF**  
+  G. Singh et al., *“Constrained 6-DoF Grasp Generation on Complex Shapes for Improved Dual-Arm Manipulation”*, IROS 2024.  
+  https://ieeexplore.ieee.org/abstract/document/10802268
+
+- **[2] DAVIL**  
+  M. F. Karim et al., *“Da-Vil: Adaptive Dual-Arm Manipulation with Reinforcement Learning and Variable Impedance Control”*, ICRA 2025.  
+  https://ieeexplore.ieee.org/abstract/document/11127487
+
+- **[3] DG16M**  
+  M. F. Karim et al., *“DG16M: A Large-Scale Dataset for Dual-Arm Grasping with Force-Optimized Grasps”*, IROS 2025.  
+  https://ieeexplore.ieee.org/document/11246970
+
+- **[4] DAGDiff**  
+  M. F. Karim et al., *“DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps”*, ICRA 2026.  
+  https://arxiv.org/abs/2509.21145
+
+</details>
 
 
-## Acknowledgment
+
+
+## 6. Acknowledgment
 Our codebase is built upon the existing works of <a href="https://sites.google.com/view/se3dif">SE(3)-diff</a> and <a href="https://constrained-grasp-diffusion.github.io/">CGDF</a>. We thank the authors for releasing the code.
 
-## Cite
+## 7. 📜 Cite
+```
+@article{DAGDiff,
+      title={DAGDiff: Guiding Dual-Arm Grasp Diffusion to Stable and Collision-Free Grasps}, 
+      author={Md Faizal Karim and Vignesh Vembar and Keshab Patra and Gaurav Singh and Nagamanikandan Govindan and K Madhava Krishna},
+      year={2026},
+      eprint={2509.21145},
+      url={https://arxiv.org/abs/2509.21145}, 
+}
+```
 
